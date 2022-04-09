@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     /// <summary>
-    /// A reference to the rigidbody 
+    /// A reference to the rigidbody component
     /// </summary>
     private Rigidbody rb;
     [Tooltip("How fast the ball moves left/right")]
@@ -20,9 +20,11 @@ public class PlayerBehaviour : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
-
-    // Update is called once per frame
-    void Update()
+           
+    /// <summary>
+    /// FixedUpdate is called at a fixed rate and is a prime place to put anything based on time
+    /// </summary>
+    private void FixedUpdate()
     {
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
         rb.AddForce(horizontalSpeed, 0, rollSpeed);
