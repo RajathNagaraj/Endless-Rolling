@@ -10,14 +10,15 @@ public class PlayerBehaviour : MonoBehaviour
     /// </summary>
     private Rigidbody rb;
     [Tooltip("How fast the ball moves left/right")]
-    public float dodgeSpeed = 0.5f;
+    public float dodgeSpeed = 5f;
     [Tooltip("How fast the ball moves forward automatically")]
-    [Range(0,1)]
-    public float rollSpeed = 0.1f;
+    [Range(0,10)]
+    public float rollSpeed = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = Vector3.zero;
         rb = GetComponent<Rigidbody>();
     }
            
