@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Will spawn a tile at a certain position and setup a new startpoint
     /// </summary>
-    private void SpawnNextTile()
+    private void SpawnNextTile(bool spawnObstacles = true)
     {
         var nextTile = Instantiate(tile,nextTileLocation,nextTileRotation);
         //Figure out where and what rotation the next tile should be Spawned
