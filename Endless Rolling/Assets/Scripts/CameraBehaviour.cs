@@ -21,9 +21,13 @@ public class CameraBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Set the camera to follow target
-        transform.position = target.position + offset;
-        //Set the camera to look at the target
-        transform.LookAt(target);
+        if(target != null)
+        {
+            //Set the camera to follow target
+            transform.position = target.position + offset;
+            //Set the camera to look at the target
+            transform.LookAt(target);
+        }
+        
     }
 }

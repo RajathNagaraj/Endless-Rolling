@@ -11,7 +11,7 @@ public class TileEndBehaviour : MonoBehaviour
     {
        if(collider.gameObject.tag == "Player")
         {
-            gameController.OnNextTileSpawned();
+            gameController.OnNextTileSpawned(true);
             Destroy(this.transform.parent.gameObject,destroyTime);
         }
     }
