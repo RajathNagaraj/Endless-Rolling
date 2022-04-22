@@ -21,7 +21,7 @@ public class ObstacleBehaviour : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Destroy(collision.gameObject);
-            gameController.OnResetGame();
+            gameController.OnEndGame();
         }
     }
 

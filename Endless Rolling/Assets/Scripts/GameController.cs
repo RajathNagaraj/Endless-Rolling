@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public Action<bool> OnNextTileSpawned;
-    public Action OnResetGame;
+    public Action OnEndGame;
     [Tooltip("A reference to the tile we want to spawn")]
     public Transform tile;
     [Tooltip("A reference to the obstacle we want to spawn")]
@@ -38,11 +38,11 @@ public class GameController : MonoBehaviour
         nextTileRotation = Quaternion.identity;
 
         OnNextTileSpawned += SpawnNextTile;
-        OnResetGame += ResetGame;
+        OnEndGame += EndGame;
 
         for(int i = 0; i < initSpawnNum; ++i)
         {
-            OnNextTileSpawned(i >= initNoObstacles);
+            SpawnNextTile(i >= initNoObstacles);
         }
     }
 
@@ -89,9 +89,14 @@ public class GameController : MonoBehaviour
     {
         
     }
+
+    private void EndGame()
+    {
+        Invoke("ResetGame",2);
+    }
     private void ResetGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Debug.Log(SceneManager.GetActiveScene().name);
+       
     }
 }
