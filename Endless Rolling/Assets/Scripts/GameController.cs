@@ -19,7 +19,11 @@ public class GameController : MonoBehaviour
     public int initSpawnNum = 10;
     [Tooltip("The number of tiles we want to spawn initially with no obstacles")]
     [Range(1,10)]
-    public int initNoObstacles = 4;
+    public int initNoObstacles;
+    /// <summary>
+    /// The number of obstacles on each tile(randomly)
+    /// </summary>
+    private int noOfObstaclesOnTile;
     /// <summary>
     /// Where the next tile should spawn at
     /// </summary>
@@ -49,7 +53,7 @@ public class GameController : MonoBehaviour
     /// <summary>
     /// Will spawn a tile at a certain position and setup a new startpoint
     /// </summary>
-    private void SpawnNextTile(bool spawnObstacles = true)
+    private void SpawnNextTile(bool spawnObstacles)
     {
         var nextTile = Instantiate(tile,nextTileLocation,nextTileRotation);
         //Figure out where and what rotation the next tile should be Spawned
@@ -62,10 +66,11 @@ public class GameController : MonoBehaviour
             SpawnObstacle(nextTile);
         }
     }
-
+    
     private void SpawnObstacle(Transform nextTile)
     {
         var obstacleSpawnPoints = new List<GameObject>();
+        var uniqueSpawnObjects = new HashSet<GameObject>();
         foreach(Transform child in nextTile)
         {
             if(child.CompareTag("ObstacleSpawn"))
@@ -73,6 +78,22 @@ public class GameController : MonoBehaviour
                 obstacleSpawnPoints.Add(child.gameObject);
             }
         }
+        // Number of obstacles on each tile
+        noOfObstaclesOnTile = ((new System.Random()).Next(1, obstacleSpawnPoints.Count));
+        //Get references for a maximum number of those obstacles in a HashSet(duplicates avoided)
+        for(int i = 1; i <= noOfObstaclesOnTile; ++i)
+        {
+            uniqueSpawnObjects.Add(obstacleSpawnPoints[UnityEngine.Random.Range(0, obstacleSpawnPoints.Count)]);
+        }
+        //Spawn each tile in the HashSet
+        foreach(GameObject block in uniqueSpawnObjects)
+        {
+            var spawnPos = block.transform.position;
+            var newObstacle = Instantiate(obstacle, spawnPos, Quaternion.identity);
+            newObstacle.SetParent(block.transform);
+
+        }
+        /*
 
         if (obstacleSpawnPoints.Count > 0)
         {
@@ -81,6 +102,7 @@ public class GameController : MonoBehaviour
             var newObstacle = Instantiate(obstacle,spawnPos,Quaternion.identity);
             newObstacle.SetParent(spawnPoint.transform);
         }
+        */
 
     }
 
