@@ -455,7 +455,7 @@ ScriptsOnlyBuild:
     className: RectMask2D
   - hash:
       serializedVersion: 2
-      Hash: 3c2aa3ec5dabf66f2d7692957773942f
+      Hash: 8b2632d1933431ae2f7ab84ca27aefb7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerBehaviour
