@@ -126,13 +126,13 @@ public class PlayerBehaviour : MonoBehaviour
         //check if Input has registered more than 0 touches
         if (Input.touchCount > 0)
         {
-            if(horizontalMovement == MobileHorizontalMovement.SwipeGesture)
-            {
-                //Store the first touch detected
-                Touch touch = Input.touches[0];
+            //Store the first touch detected
+            Touch touch = Input.touches[0];
+            if (horizontalMovement == MobileHorizontalMovement.SwipeGesture)
+            {                
                 SwipeTeleport(touch);
             }
-
+            TouchObjects(touch);
             ScalePlayer();
             
         }
@@ -230,5 +230,28 @@ public class PlayerBehaviour : MonoBehaviour
             //Set our current scale for the next frame
             currentScale = newScale;
         }
+    }
+
+    /// <summary>
+    /// Will determine if we are calling a game object 
+    /// and if so, call events for it
+    /// </summary>
+    /// <param name="touch">Our touch event</param>
+    private static void TouchObjects(Touch touch)
+    {
+        //Convert the position into a Ray
+        Ray touchRay = Camera.main.ScreenPointToRay(touch.position);
+        RaycastHit hit;
+
+        //Create a layer mask that will collide with all possible channels
+        int layerMask = ~0;
+
+        //Are we touching an object with a collider?
+        if(Physics.Raycast(touchRay,out hit,Mathf.Infinity, layerMask , QueryTriggerInteraction.Ignore))
+        {
+            //Call the PlayerTouch method if it exists on a component attached to this object
+            hit.transform.SendMessage("PlayerTouch",SendMessageOptions.DontRequireReceiver);
+        }
+
     }
 }

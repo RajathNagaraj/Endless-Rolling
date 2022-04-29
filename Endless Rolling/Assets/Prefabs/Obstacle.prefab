@@ -108,4 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6a7b4321a3600b40ab195e41f90c506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosion: {fileID: 8815977513061736404, guid: 00480d494bbeced4d86430302ef19783, type: 3}
   waitTime: 2

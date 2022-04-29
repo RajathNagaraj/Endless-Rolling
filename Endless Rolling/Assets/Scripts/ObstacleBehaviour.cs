@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ObstacleBehaviour : MonoBehaviour
 {
+    public GameObject explosion;
     private GameController gameController;
     [Tooltip("The time to wait before the game restarts")]
     public float waitTime = 2f;
@@ -21,7 +22,7 @@ public class ObstacleBehaviour : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Destroy(collision.gameObject);
-            gameController.OnEndGame();
+            gameController.OnEndGame(waitTime);
         }
     }
 
@@ -29,6 +30,19 @@ public class ObstacleBehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+    /// <summary>
+    /// If this object is touched, we spawn an explosion and destroy this object
+    /// </summary>
+    private void PlayerTouch()
+    {
+        if(explosion != null)
+        {
+            var particles = Instantiate(explosion,transform.position,Quaternion.identity);
+            Destroy(particles, 1f);
+        }
+
+        Destroy(this.gameObject);
     }
    
 }

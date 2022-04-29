@@ -264,7 +264,6 @@ MonoBehaviour:
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 15
   initNoObstacles: 3
-  noOfObstaclesOnTile: 1
 --- !u!1 &1222995645
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,6 +489,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dodgeSpeed: 10
   rollSpeed: 7
-  horizontalMovement: 2
+  horizontalMovement: 0
+  minScale: 0.5
+  maxScale: 3
   swipeMove: 2
   minSwipeDistance: 0.25

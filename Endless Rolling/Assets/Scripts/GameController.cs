@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public Action<bool> OnNextTileSpawned;
-    public Action OnEndGame;
+    public Action<float> OnEndGame;
     [Tooltip("A reference to the tile we want to spawn")]
     public Transform tile;
     [Tooltip("A reference to the obstacle we want to spawn")]
@@ -112,9 +112,9 @@ public class GameController : MonoBehaviour
         
     }
 
-    private void EndGame()
+    private void EndGame(float waitTime)
     {
-        Invoke("ResetGame",2);
+        Invoke("ResetGame",waitTime);
     }
     private void ResetGame()
     {
