@@ -93,16 +93,7 @@ public class GameController : MonoBehaviour
             newObstacle.SetParent(block.transform);
 
         }
-        /*
-
-        if (obstacleSpawnPoints.Count > 0)
-        {
-            var spawnPoint = obstacleSpawnPoints[UnityEngine.Random.Range(0, obstacleSpawnPoints.Count)];
-            var spawnPos = spawnPoint.transform.position;
-            var newObstacle = Instantiate(obstacle,spawnPos,Quaternion.identity);
-            newObstacle.SetParent(spawnPoint.transform);
-        }
-        */
+        
 
     }
 

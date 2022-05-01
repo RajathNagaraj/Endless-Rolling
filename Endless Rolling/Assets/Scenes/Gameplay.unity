@@ -263,7 +263,7 @@ MonoBehaviour:
   obstacle: {fileID: 7973304598516339300, guid: f7c2b2151678680468e03ccc7ef38267, type: 3}
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 15
-  initNoObstacles: 3
+  initNoObstacles: 1
 --- !u!1 &1222995645
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dodgeSpeed: 10
   rollSpeed: 7
-  horizontalMovement: 0
+  inputStyleObject: {fileID: 11400000, guid: 4f33623a4ecebdf4d9d93757da91eb01, type: 2}
   minScale: 0.5
   maxScale: 3
   swipeMove: 2
