@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Obstacles\ObstacleBehaviour.cs" />
-    <Compile Include="Assets\Scripts\InputStyles\InputStyle.cs" />
+    <Compile Include="Assets\Scripts\Enums\InputStyles\InputStyle.cs" />
     <Compile Include="Assets\Scripts\UI\Main Menu\MainMenuBehaviour.cs" />
     <Compile Include="Assets\Scripts\Basic Tile\TileEndBehaviour.cs" />
     <Compile Include="Assets\Scripts\UI\Input  Menu\InputMenuBehaviour.cs" />
@@ -65,6 +65,9 @@
     <Compile Include="Assets\Scripts\Player\PlayerBehaviour.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraBehaviour.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
+    <Compile Include="Assets\Scripts\Difficulty.cs" />
+    <Compile Include="Assets\Scripts\Enums\Difficulty Settings\GameMode.cs" />
+    <Compile Include="Assets\Scripts\UI\Difficulty Menu\DifficultyMenuController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

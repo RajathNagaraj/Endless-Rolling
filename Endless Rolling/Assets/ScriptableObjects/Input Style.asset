@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c1488ecf9d77d4fbe3ac5ee4918acd, type: 3}
   m_Name: Input Style
   m_EditorClassIdentifier: 
-  horizMovement: 0
+  horizMovement: 1

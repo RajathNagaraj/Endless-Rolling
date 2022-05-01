@@ -32,6 +32,14 @@ public class GameController : MonoBehaviour
     /// The rotation of the spawned tile
     /// </summary>
     private Quaternion nextTileRotation;
+    private float lengthOfTile;
+    
+    public Difficulty difficultySetting;
+
+    private void Awake()
+    {
+        SetDifficulty(difficultySetting.mode);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +47,7 @@ public class GameController : MonoBehaviour
         //set our Starting Point
         nextTileLocation = startPoint;
         //Set our rotation when spawned
-        nextTileRotation = Quaternion.identity;
+        nextTileRotation = Quaternion.identity;       
 
         OnNextTileSpawned += SpawnNextTile;
         OnEndGame += EndGame;
@@ -50,12 +58,33 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void SetDifficulty(GameMode difficultySetting)
+    {
+        switch(difficultySetting)
+        {
+            case GameMode.Easy: lengthOfTile = 3f;
+                initNoObstacles = 4;
+                break;
+            case GameMode.Medium: lengthOfTile = 2f;
+                initNoObstacles = 2;
+                break;
+            case GameMode.Hard: lengthOfTile = 1f;
+                initNoObstacles = 1;
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
     /// <summary>
     /// Will spawn a tile at a certain position and setup a new startpoint
     /// </summary>
     private void SpawnNextTile(bool spawnObstacles)
     {
         var nextTile = Instantiate(tile,nextTileLocation,nextTileRotation);
+        nextTile = SetTileLength(nextTile);
         //Figure out where and what rotation the next tile should be Spawned
         var nextEndPoint = nextTile.Find("Next Spawn Point");
         nextTileLocation = nextEndPoint.position;
@@ -66,7 +95,15 @@ public class GameController : MonoBehaviour
             SpawnObstacle(nextTile);
         }
     }
-    
+
+    private Transform SetTileLength(Transform nextTile)
+    {
+        float scaleFactor = nextTile.localScale.z;
+        scaleFactor *= lengthOfTile;
+        nextTile.localScale = new Vector3(1, 1, scaleFactor);
+        return nextTile;
+    }
+
     private void SpawnObstacle(Transform nextTile)
     {
         var obstacleSpawnPoints = new List<GameObject>();

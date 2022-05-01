@@ -12,13 +12,14 @@ public class PlayerBehaviour : MonoBehaviour
     [Tooltip("How fast the ball moves left/right")]
     public float dodgeSpeed = 5f;
     [Tooltip("How fast the ball moves forward automatically")]
-    [Range(0,10)]
+    [Range(0,15)]
     public float rollSpeed = 1f;
     /// <summary>
     /// Using a value to prevent ball from bouncing up and down for some reason
     /// </summary>
     private const float CLAMP_Y = 0.55f;
 
+    private GameController gameController;
     public InputStyleObject inputStyleObject;
     private MobileHorizontalMovement horizontalMovement; 
 
@@ -49,9 +50,18 @@ public class PlayerBehaviour : MonoBehaviour
 
 
 
+    private void Awake()
+    {
+        //gameController = GameObject.FindObjectOfType<GameController>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        
+        //Setting the Player speed and dodge speed according to difficulty
+        //SetSpeed(gameController.difficultySetting.mode);
+
         //Set the Player's initial position to (0,0,0)
         transform.position = Vector3.zero;
         rb = GetComponent<Rigidbody>();
@@ -59,8 +69,30 @@ public class PlayerBehaviour : MonoBehaviour
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
         //Setting the input style
         horizontalMovement = inputStyleObject.horizMovement;
+        
         Debug.Log("PlayerBehaviour : "+ horizontalMovement);
     }
+
+    /*
+    private void SetSpeed(GameMode mode)
+    {
+        switch(mode)
+        {
+            case GameMode.Easy:
+                rollSpeed = 7f;
+                break;
+            case GameMode.Medium:
+                rollSpeed = 9f;
+                break;
+            case GameMode.Hard:
+                rollSpeed = 10f;
+                break;
+
+            default:
+                break;
+        }
+    }
+    */
 
     private float CalculateMovement(Vector3 pixelPos)
     {
@@ -180,7 +212,7 @@ public class PlayerBehaviour : MonoBehaviour
                 moveDirection = -1f;
             }
 
-            rb.AddForce(moveDirection * swipeMove, 0, 0,ForceMode.Impulse);
+            rb.AddForce(-moveDirection * swipeMove, 0, 0,ForceMode.Impulse);
 
             /*
             RaycastHit hit;

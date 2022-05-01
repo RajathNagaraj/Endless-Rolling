@@ -48,7 +48,7 @@ public class InputMenuBehaviour : MonoBehaviour
                         break;
                 }
 
-                LoadLevel("Gameplay");
+                LoadLevel("Difficulty");
 
 
 
