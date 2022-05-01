@@ -71,10 +71,10 @@ public class PlayerBehaviour : MonoBehaviour
     void Start()
     {
 
-        //Setting how many destroys the Player initially has
-        SetDifficulty(gameController.difficultySetting.mode);
-
         
+
+        //Setting how many destroys the Player initially has
+        SetDifficulty(gameController.difficultySetting.mode);       
         
 
         //Set the Player's initial position to (0,0,0)
@@ -175,6 +175,8 @@ public class PlayerBehaviour : MonoBehaviour
     private void Update()
     {
 #if UNITY_IOS || UNITY_ANDROID
+
+        scoreBehaviour.DisplayDestroy(initNoOfDestroys);
         //check if Input has registered more than 0 touches
         if (Input.touchCount > 0)
         {
@@ -185,7 +187,6 @@ public class PlayerBehaviour : MonoBehaviour
                 SwipeTeleport(touch);
             }
                 TouchObjects(touch);
-                scoreBehaviour.DisplayDestroy(initNoOfDestroys);
                 ScalePlayer();
             
         }

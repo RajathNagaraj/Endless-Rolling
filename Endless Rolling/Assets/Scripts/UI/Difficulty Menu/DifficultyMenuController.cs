@@ -27,15 +27,15 @@ public class DifficultyMenuController : MonoBehaviour
                 buttonName = button.gameObject.name;
                 switch (buttonName)
                 {
-                    case "EASY":
+                    case "Easy":
                         difficulty.mode = GameMode.Easy;
                         Debug.Log("button pressed is " + buttonName);
                         break;
-                    case "MEDIUM":
+                    case "Medium":
                         difficulty.mode = GameMode.Medium;
                         Debug.Log("button pressed is " + buttonName);
                         break;
-                    case "HARD":
+                    case "Hard":
                         difficulty.mode = GameMode.Hard;
                         Debug.Log("button pressed is " + buttonName);
                         break;

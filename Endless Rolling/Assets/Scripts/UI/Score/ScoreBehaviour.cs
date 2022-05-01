@@ -18,7 +18,8 @@ public  class ScoreBehaviour : MonoBehaviour
 
     public void DisplayDestroy(int count)
     {
-        destroyText.text = destroyText.text + " "+count;
+        Debug.Log(count);
+        destroyText.text = "Destroys: "+count.ToString();
     }
 
     // Update is called once per frame
