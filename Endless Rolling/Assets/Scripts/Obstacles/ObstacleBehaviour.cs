@@ -34,15 +34,19 @@ public class ObstacleBehaviour : MonoBehaviour
     /// <summary>
     /// If this object is touched, we spawn an explosion and destroy this object
     /// </summary>
-    private void PlayerTouch()
+    private void PlayerTouch(int NoOfDestroys)
     {
-        if(explosion != null)
+        if(NoOfDestroys > 0)
         {
-            var particles = Instantiate(explosion,transform.position,Quaternion.identity);
-            Destroy(particles, 1f);
-        }
+            if (explosion != null)
+            {
+                var particles = Instantiate(explosion, transform.position, Quaternion.identity);
+                Destroy(particles, 1f);
+            }
 
-        Destroy(this.gameObject);
+            Destroy(this.gameObject);
+        }
+        
     }
    
 }

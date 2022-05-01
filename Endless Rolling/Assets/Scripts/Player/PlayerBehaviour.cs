@@ -21,7 +21,11 @@ public class PlayerBehaviour : MonoBehaviour
 
     private GameController gameController;
     public InputStyleObject inputStyleObject;
-    private MobileHorizontalMovement horizontalMovement; 
+    private MobileHorizontalMovement horizontalMovement;
+    /// <summary>
+    /// How many destroys can the Player use initially
+    /// </summary>
+    private static int initNoOfDestroys;
 
     [Header("Scale Properties")]
     [Tooltip("The minimum size (in Unity units) that the Player should be ")]
@@ -47,20 +51,31 @@ public class PlayerBehaviour : MonoBehaviour
     /// Stores the starting position of mobile touch events
     /// </summary>
     private Vector2 touchStart;
+    private ScoreBehaviour scoreBehaviour;
+
+
+    static PlayerBehaviour()
+    {
+        initNoOfDestroys = 0;
+    }
 
 
 
     private void Awake()
     {
-        //gameController = GameObject.FindObjectOfType<GameController>();
+        gameController = GameObject.FindObjectOfType<GameController>();
+        scoreBehaviour = GameObject.FindObjectOfType<ScoreBehaviour>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        //Setting how many destroys the Player initially has
+        SetDifficulty(gameController.difficultySetting.mode);
+
         
-        //Setting the Player speed and dodge speed according to difficulty
-        //SetSpeed(gameController.difficultySetting.mode);
+        
 
         //Set the Player's initial position to (0,0,0)
         transform.position = Vector3.zero;
@@ -73,26 +88,26 @@ public class PlayerBehaviour : MonoBehaviour
         Debug.Log("PlayerBehaviour : "+ horizontalMovement);
     }
 
-    /*
-    private void SetSpeed(GameMode mode)
+    
+    private void SetDifficulty(GameMode mode)
     {
         switch(mode)
         {
             case GameMode.Easy:
-                rollSpeed = 7f;
+                initNoOfDestroys = 9;                
                 break;
             case GameMode.Medium:
-                rollSpeed = 9f;
+                initNoOfDestroys = 7;
                 break;
             case GameMode.Hard:
-                rollSpeed = 10f;
+                initNoOfDestroys = 3;
                 break;
 
             default:
                 break;
         }
     }
-    */
+    
 
     private float CalculateMovement(Vector3 pixelPos)
     {
@@ -169,8 +184,9 @@ public class PlayerBehaviour : MonoBehaviour
             {                
                 SwipeTeleport(touch);
             }
-            TouchObjects(touch);
-            ScalePlayer();
+                TouchObjects(touch);
+                scoreBehaviour.DisplayDestroy(initNoOfDestroys);
+                ScalePlayer();
             
         }
 #endif
@@ -275,7 +291,7 @@ public class PlayerBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="touch">Our touch event</param>
     private static void TouchObjects(Touch touch)
-    {
+    {       
         //Convert the position into a Ray
         Ray touchRay = Camera.main.ScreenPointToRay(touch.position);
         RaycastHit hit;
@@ -287,10 +303,13 @@ public class PlayerBehaviour : MonoBehaviour
         if(Physics.Raycast(touchRay,out hit,Mathf.Infinity, layerMask , QueryTriggerInteraction.Ignore))
         {
             //Call the PlayerTouch method if it exists on a component attached to this object
-            hit.transform.SendMessage("PlayerTouch",SendMessageOptions.DontRequireReceiver);
+            hit.transform.SendMessage("PlayerTouch",initNoOfDestroys,SendMessageOptions.DontRequireReceiver);
+            --initNoOfDestroys;    
+            
         }
 
     }
+
 
     private void ClampPlayerVertical()
     {
