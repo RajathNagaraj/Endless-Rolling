@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuBehaviour : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject gameModePrefab;
+
+    
 
     /// <summary>
     /// Will load a scene upon being called
@@ -25,5 +29,9 @@ public class MainMenuBehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+    private void Awake()
+    {
+        gameModePrefab = Instantiate(gameModePrefab);
     }
 }

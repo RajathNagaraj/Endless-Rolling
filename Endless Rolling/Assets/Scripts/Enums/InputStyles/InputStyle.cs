@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum MobileHorizontalMovement
+public enum InputStyle
 {
     Accelerometer,
     ScreenTouch,

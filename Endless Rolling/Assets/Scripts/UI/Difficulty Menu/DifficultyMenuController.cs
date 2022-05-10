@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class DifficultyMenuController : MonoBehaviour
 {
 
-    public Difficulty difficulty;
+    
     private Button[] buttons;
     private string buttonName;
 
@@ -28,15 +28,15 @@ public class DifficultyMenuController : MonoBehaviour
                 switch (buttonName)
                 {
                     case "Easy":
-                        difficulty.mode = GameMode.Easy;
+                        GameMode.Instance.difficulty = GameDifficulty.Easy;
                         Debug.Log("button pressed is " + buttonName);
                         break;
                     case "Medium":
-                        difficulty.mode = GameMode.Medium;
+                        GameMode.Instance.difficulty = GameDifficulty.Medium;
                         Debug.Log("button pressed is " + buttonName);
                         break;
                     case "Hard":
-                        difficulty.mode = GameMode.Hard;
+                        GameMode.Instance.difficulty = GameDifficulty.Hard;
                         Debug.Log("button pressed is " + buttonName);
                         break;
 

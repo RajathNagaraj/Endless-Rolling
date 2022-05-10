@@ -6,25 +6,30 @@ using UnityEngine.UI;
 
 public  class ScoreBehaviour : MonoBehaviour
 {
-    
+    public static Action<int> OnDestroyUpdated;
+    private static Text destroyText;
 
-    private Text destroyText;
+    private void Awake()
+    {
+        destroyText = GetComponentInChildren<Text>();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        destroyText = GetComponentInChildren<Text>();
+       
+        OnDestroyUpdated += DisplayDestroy;
         
     }
 
-    public void DisplayDestroy(int count)
+    private static void DisplayDestroy(int count)
     {
-        Debug.Log(count);
-        destroyText.text = "Destroys: "+count.ToString();
+        Debug.Log("Score Behaviour: Destroys left: "+count);
+        destroyText.text = "Destroys: "+count;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 }

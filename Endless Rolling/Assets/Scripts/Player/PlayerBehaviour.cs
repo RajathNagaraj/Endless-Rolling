@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,14 +19,28 @@ public class PlayerBehaviour : MonoBehaviour
     /// Using a value to prevent ball from bouncing up and down for some reason
     /// </summary>
     private const float CLAMP_Y = 0.55f;
+             
 
-    private GameController gameController;
-    public InputStyleObject inputStyleObject;
-    private MobileHorizontalMovement horizontalMovement;
     /// <summary>
     /// How many destroys can the Player use initially
     /// </summary>
     private static int initNoOfDestroys;
+
+    public static int InitNoOfDestroys
+    {
+        get { return initNoOfDestroys; }
+        set {   if(value > 0)
+                {
+                    initNoOfDestroys = value;
+                }
+                else
+                {
+                    initNoOfDestroys = 0;
+                }
+            }
+    }
+
+    public static Action<int> OnObstacleDestroyed;
 
     [Header("Scale Properties")]
     [Tooltip("The minimum size (in Unity units) that the Player should be ")]
@@ -47,65 +62,84 @@ public class PlayerBehaviour : MonoBehaviour
     /// Used to hold the value of minSwipeDistance converted to Pixels
     /// </summary>
     private float minSwipeDistancePixels;
+    //The mode of input we want to use
+    private InputStyle horizontalMovement;
+
     /// <summary>
     /// Stores the starting position of mobile touch events
     /// </summary>
     private Vector2 touchStart;
-    private ScoreBehaviour scoreBehaviour;
-
-
+    
+    /*
     static PlayerBehaviour()
     {
         initNoOfDestroys = 0;
     }
+    */
 
 
 
     private void Awake()
     {
-        gameController = GameObject.FindObjectOfType<GameController>();
-        scoreBehaviour = GameObject.FindObjectOfType<ScoreBehaviour>();
+        //Get a reference to the Player's rigidbody
+        rb = GetComponent<Rigidbody>();
+        Debug.Log("Reference to rigidbody obtained");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
-        
-
-        //Setting how many destroys the Player initially has
-        SetDifficulty(gameController.difficultySetting.mode);       
-        
-
         //Set the Player's initial position to (0,0,0)
         transform.position = Vector3.zero;
-        rb = GetComponent<Rigidbody>();
+
+
+        if (GameMode.Instance != null)
+        {
+            //Setting how many destroys the Player initially has
+            SetPlayerDestroys(GameMode.Instance.difficulty);
+        }
+        else
+        {
+            SetPlayerDestroys(GameDifficulty.Hard);
+        }
+       
+
+        OnObstacleDestroyed += UpdateDestroys;
+
+        
+        
         //Set the minimum distance to be swiped in pixel units
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
-        //Setting the input style
-        horizontalMovement = inputStyleObject.horizMovement;
-        
+        if (GameMode.Instance != null)
+        {
+            //Setting the input style
+            horizontalMovement = GameMode.Instance.inputMode;
+        }
         Debug.Log("PlayerBehaviour : "+ horizontalMovement);
     }
 
     
-    private void SetDifficulty(GameMode mode)
+    private void SetPlayerDestroys(GameDifficulty mode)
     {
         switch(mode)
         {
-            case GameMode.Easy:
-                initNoOfDestroys = 9;                
+            case GameDifficulty.Easy:
+                InitNoOfDestroys = 9;                
                 break;
-            case GameMode.Medium:
-                initNoOfDestroys = 7;
+            case GameDifficulty.Medium:
+                InitNoOfDestroys = 7;
                 break;
-            case GameMode.Hard:
-                initNoOfDestroys = 3;
+            case GameDifficulty.Hard:
+                InitNoOfDestroys = 3;
                 break;
 
             default:
                 break;
         }
+
+        Debug.Log("Game difficulty "+mode.ToString());
+
+        ScoreBehaviour.OnDestroyUpdated(InitNoOfDestroys);
     }
     
 
@@ -130,6 +164,11 @@ public class PlayerBehaviour : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        //If the game is paused dont do anything
+        if (PauseScreenBehaviour.paused)
+        {
+            return;
+        }
         var horizontalSpeed = 0f;
 
         ClampPlayerVertical();
@@ -141,11 +180,12 @@ public class PlayerBehaviour : MonoBehaviour
         if (Input.GetMouseButton(0))
         {           
             horizontalSpeed = CalculateMovement(Input.mousePosition);
+            ClickObstacle(Input.mousePosition);
         }
 
 #elif UNITY_IOS || UNITY_ANDROID
         
-        if(horizontalMovement == MobileHorizontalMovement.Accelerometer)
+        if(horizontalMovement == InputStyle.Accelerometer)
         {
             //Move Player based on direction of Accelerometer
             horizontalSpeed = Input.acceleration.x * dodgeSpeed;
@@ -154,19 +194,33 @@ public class PlayerBehaviour : MonoBehaviour
 
         if(Input.touchCount > 0)
         {
-            if (horizontalMovement == MobileHorizontalMovement.ScreenTouch)
+            if (horizontalMovement == InputStyle.ScreenTouch)
             {
                 Touch touch = Input.touches[0];
                 horizontalSpeed = CalculateMovement(touch.position);
             }
-
-                            
-            
-
         }
 #endif
 
         rb.AddForce(horizontalSpeed, 0, rollSpeed);
+    }
+
+    private void ClickObstacle(Vector3 mousePosition)
+    {
+        //Vector3 mouseClick = Camera.main.ScreenToWorldPoint(mousePosition);
+        Ray clickRay = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        //Create a layer mask that will collide with all possible channels
+        int layerMask = ~0;
+
+        //Are we touching an object with a collider?
+        if (Physics.Raycast(clickRay, out hit, Mathf.Infinity, layerMask, QueryTriggerInteraction.Ignore))
+        {
+            //Call the PlayerTouch method if it exists on a component attached to this object
+            hit.transform.gameObject.SendMessage("PlayerTouch", SendMessageOptions.DontRequireReceiver);
+        }
+
     }
 
     /// <summary>
@@ -175,14 +229,17 @@ public class PlayerBehaviour : MonoBehaviour
     private void Update()
     {
 #if UNITY_IOS || UNITY_ANDROID
-
-        scoreBehaviour.DisplayDestroy(initNoOfDestroys);
+        //If the game is paused dont do anything
+        if (PauseScreenBehaviour.paused)
+        {
+            return;
+        }
         //check if Input has registered more than 0 touches
         if (Input.touchCount > 0)
         {
             //Store the first touch detected
             Touch touch = Input.touches[0];
-            if (horizontalMovement == MobileHorizontalMovement.SwipeGesture)
+            if (horizontalMovement == InputStyle.SwipeGesture)
             {                
                 SwipeTeleport(touch);
             }
@@ -304,9 +361,7 @@ public class PlayerBehaviour : MonoBehaviour
         if(Physics.Raycast(touchRay,out hit,Mathf.Infinity, layerMask , QueryTriggerInteraction.Ignore))
         {
             //Call the PlayerTouch method if it exists on a component attached to this object
-            hit.transform.SendMessage("PlayerTouch",initNoOfDestroys,SendMessageOptions.DontRequireReceiver);
-            --initNoOfDestroys;    
-            
+            hit.transform.gameObject.SendMessage("PlayerTouch", SendMessageOptions.DontRequireReceiver);
         }
 
     }
@@ -319,5 +374,11 @@ public class PlayerBehaviour : MonoBehaviour
         yPos = Mathf.Clamp(yPos, 0, CLAMP_Y);
         Vector3 pos = new Vector3(transform.position.x, yPos, transform.position.z);
         transform.position = pos;
+    }
+
+    private void UpdateDestroys(int update)
+    {
+        InitNoOfDestroys = update;
+        ScoreBehaviour.OnDestroyUpdated(InitNoOfDestroys);
     }
 }

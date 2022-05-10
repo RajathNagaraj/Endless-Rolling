@@ -6,11 +6,7 @@ using UnityEngine.UI;
 
 public class InputMenuBehaviour : MonoBehaviour
 {
-    [Header("Scriptable Object")]
-    [SerializeField]
-    private InputStyleObject inputStyleObject;
-
-
+    
     private Button[] buttons;
     private string buttonName;
 
@@ -31,15 +27,15 @@ public class InputMenuBehaviour : MonoBehaviour
                 switch (buttonName)
                 {
                     case "Accelerometer":
-                        inputStyleObject.horizMovement = MobileHorizontalMovement.Accelerometer;
+                        GameMode.Instance.inputMode = InputStyle.Accelerometer;
                         Debug.Log("button pressed is " + buttonName);
                         break;
                     case "Screen Touch":
-                        inputStyleObject.horizMovement = MobileHorizontalMovement.ScreenTouch;
+                        GameMode.Instance.inputMode = InputStyle.ScreenTouch;
                         Debug.Log("button pressed is " + buttonName);
                         break;
                     case "Swipe Gesture":
-                        inputStyleObject.horizMovement = MobileHorizontalMovement.SwipeGesture;
+                        GameMode.Instance.inputMode = InputStyle.SwipeGesture;
                         Debug.Log("button pressed is " + buttonName);
                         break;
 

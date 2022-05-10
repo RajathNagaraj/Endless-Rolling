@@ -34,11 +34,21 @@ public class GameController : MonoBehaviour
     private Quaternion nextTileRotation;
     private float lengthOfTile;
     
-    public Difficulty difficultySetting;
 
     private void Awake()
     {
-        SetDifficulty(difficultySetting.mode);
+
+        
+       if(GameMode.Instance != null)
+        {
+            SetDifficulty(GameMode.Instance.difficulty);
+        }
+        else
+        {
+            SetDifficulty(GameDifficulty.Hard);
+        }
+        
+       
     }
 
     // Start is called before the first frame update
@@ -58,17 +68,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void SetDifficulty(GameMode difficultySetting)
+    private void SetDifficulty(GameDifficulty difficultySetting)
     {
         switch(difficultySetting)
         {
-            case GameMode.Easy: lengthOfTile = 3f;
+            case GameDifficulty.Easy: lengthOfTile = 3f;
                 initNoObstacles = 4;
                 break;
-            case GameMode.Medium: lengthOfTile = 2f;
+            case GameDifficulty.Medium: lengthOfTile = 2f;
                 initNoObstacles = 2;
                 break;
-            case GameMode.Hard: lengthOfTile = 1f;
+            case GameDifficulty.Hard: lengthOfTile = 1f;
                 initNoObstacles = 1;
                 break;
 
@@ -146,7 +156,6 @@ public class GameController : MonoBehaviour
     }
     private void ResetGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-       
+       SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
