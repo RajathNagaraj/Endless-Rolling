@@ -16,7 +16,12 @@ public class MainMenuBehaviour : MonoBehaviour
     /// <param name="levelName">The name of the level we want to load</param>
     public void LoadLevel(string levelName)
     {
-        SceneManager.LoadScene(levelName);
+        SceneManager.LoadScene(levelName);       
+        if(UnityAdController.showAds)
+        {
+            //Show an Ad
+            UnityAdController.ShowAd();
+        }
     }
 
     // Start is called before the first frame update

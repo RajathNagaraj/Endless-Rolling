@@ -37,7 +37,7 @@ public class PauseScreenBehaviour : MainMenuBehaviour
 
     private void Awake()
     {
-        //Must be reset in Start otherwise game will be paused upon restart
+        //Must be reset in Awake otherwise game will be paused upon restart
         SetPauseMenu(false);
     }
 

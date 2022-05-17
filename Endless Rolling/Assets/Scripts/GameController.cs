@@ -32,12 +32,15 @@ public class GameController : MonoBehaviour
     /// The rotation of the spawned tile
     /// </summary>
     private Quaternion nextTileRotation;
+    /// <summary>
+    /// The length of each tile
+    /// </summary>
     private float lengthOfTile;
     
 
     private void Awake()
     {
-
+        
         
        if(GameMode.Instance != null)
         {
@@ -60,7 +63,7 @@ public class GameController : MonoBehaviour
         nextTileRotation = Quaternion.identity;       
 
         OnNextTileSpawned += SpawnNextTile;
-        OnEndGame += EndGame;
+        OnEndGame += (float waitTime) => { Invoke("ResetGame", waitTime); };
 
         for(int i = 0; i < initSpawnNum; ++i)
         {
@@ -110,7 +113,7 @@ public class GameController : MonoBehaviour
     {
         float scaleFactor = nextTile.localScale.z;
         scaleFactor *= lengthOfTile;
-        nextTile.localScale = new Vector3(1, 1, scaleFactor);
+        nextTile.localScale = new Vector3(nextTile.localScale.x, nextTile.localScale.y, scaleFactor);
         return nextTile;
     }
 
@@ -132,7 +135,7 @@ public class GameController : MonoBehaviour
         {
             uniqueSpawnObjects.Add(obstacleSpawnPoints[UnityEngine.Random.Range(0, obstacleSpawnPoints.Count)]);
         }
-        //Spawn each tile in the HashSet
+        //Spawn each obstacle in the HashSet
         foreach(GameObject block in uniqueSpawnObjects)
         {
             var spawnPos = block.transform.position;
@@ -150,10 +153,6 @@ public class GameController : MonoBehaviour
         
     }
 
-    private void EndGame(float waitTime)
-    {
-        Invoke("ResetGame",waitTime);
-    }
     private void ResetGame()
     {
        SceneManager.LoadScene(SceneManager.GetActiveScene().name);

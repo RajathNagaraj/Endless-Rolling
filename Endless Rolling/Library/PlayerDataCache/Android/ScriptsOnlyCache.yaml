@@ -12,6 +12,7 @@ ScriptsOnlyBuild:
     - PlayerBehaviour
     - ScoreBehaviour
     - TileEndBehaviour
+    - UISafeAreaHandler
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro.dll:
@@ -52,6 +53,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -74,6 +77,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 3060}
     - Class: 114
       Script: {instanceID: 4108}
+    - Class: 114
+      Script: {instanceID: 16250}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -114,8 +119,6 @@ ScriptsOnlyBuild:
     - Class: 65
       Script: {instanceID: 0}
     - Class: 81
-      Script: {instanceID: 0}
-    - Class: 89
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
@@ -194,6 +197,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -216,6 +221,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 3060}
     - Class: 114
       Script: {instanceID: 3208}
+    - Class: 114
+      Script: {instanceID: 16250}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -249,6 +256,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -281,6 +290,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 3712}
     - Class: 114
       Script: {instanceID: 3962}
+    - Class: 114
+      Script: {instanceID: 16250}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -790,6 +801,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PauseScreenBehaviour
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UISafeAreaHandler
   platform: 13
   scenePathNames:
   - Assets/Scenes/MainMenu.unity
